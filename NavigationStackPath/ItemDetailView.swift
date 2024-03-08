@@ -11,6 +11,8 @@ import SwiftUI
 struct ItemDetailView: View {
     // NavigationStack用ビュースタック（パス）
     @Binding var navigationPath: NavigationPath
+    // 表示対象データ管理オブジェクト
+    @ObservedObject var itemManager: ItemManager
     // 表示対象データ
     var item: Item
 
@@ -28,7 +30,7 @@ struct ItemDetailView: View {
         .padding()
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("Detail")
-        // あえて自動表示される戻るボタンは隠す（navigationPathの操作によって画面を戻す機能の紹介のため）
+        // あえて自動表示される戻るボタンを隠す（navigationPathの操作によって画面を戻す機能の紹介のため）
         .navigationBarBackButtonHidden()
         // ツールバー部
         .toolbar {
@@ -38,7 +40,18 @@ struct ItemDetailView: View {
                     // スタックの最後を削除することで、この画面を閉じる
                     navigationPath.removeLast()
                 }) {
-                    Text("Back")
+                    Text("<Back")
+                }
+            }
+            // 次へボタン（次の表示対象があれば表示）
+            if let nextItem = itemManager.nextItem(item) {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        // 次の表示対象（画面）をスタックに積むことで、次の画面へ遷移する
+                        navigationPath.append(nextItem)
+                    }) {
+                        Text("Next>")
+                    }
                 }
             }
         }
@@ -47,5 +60,5 @@ struct ItemDetailView: View {
 
 // プレビュー
 #Preview {
-    ItemDetailView(navigationPath: .constant(NavigationPath()), item: ItemManger().items[0])
+    ItemDetailView(navigationPath: .constant(NavigationPath()), itemManager: ItemManager(), item: ItemManager().items[0])
 }

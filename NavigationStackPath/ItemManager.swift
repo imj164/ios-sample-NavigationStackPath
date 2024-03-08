@@ -9,7 +9,7 @@
 import Foundation
 
 // 複数の表示対象データを管理するオブジェクト
-final class ItemManger: ObservableObject {
+final class ItemManager: ObservableObject {
     // 管理する表示対象データ群
     @Published var items: [Item] = []
     
@@ -23,5 +23,13 @@ final class ItemManger: ObservableObject {
             Item(title: "Durian", description: "Durian is a large, spiky fruit known for its strong odor and unique taste, often described as a combination of creamy custard and onions, popular in Southeast Asian cuisine."),
             Item(title: "Elderberry", description: "Elderberries are small, dark purple berries packed with antioxidants and vitamins, known for their tart flavor and medicinal properties, often used in jams, syrups, and herbal remedies.")
         ]
+    }
+    
+    // 次の表示対象を返す（無ければnilを返す）
+    func nextItem(_ item: Item) -> Item? {
+        guard let currentIndex = items.firstIndex(where: { $0.id == item.id }), currentIndex < items.count - 1 else {
+            return nil
+        }
+        return items[currentIndex + 1]
     }
 }

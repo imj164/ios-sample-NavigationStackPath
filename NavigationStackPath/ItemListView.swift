@@ -36,5 +36,5 @@ struct ItemListView: View {
 
 // プレビュー
 #Preview {
-    ItemListView(items: ItemManger().items)
+    ItemListView(items: ItemManager().items)
 }

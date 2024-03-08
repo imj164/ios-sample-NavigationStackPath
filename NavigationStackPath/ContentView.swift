@@ -12,7 +12,7 @@ struct ContentView: View {
     // NavigationStack用ビュースタック（パス）
     @State private var navigationPath = NavigationPath()
     // 表示対象データ管理オブジェクト
-    @StateObject private var itemManager = ItemManger()
+    @StateObject private var itemManager = ItemManager()
 
     // ボタンによる詳細画面切り替えのためのインデックス（デモ用）
     @State private var index = 0
@@ -39,7 +39,7 @@ struct ContentView: View {
             // NavigationLinkやビュースタックの操作による遷移先を指定（あえてこんなところに定義）
             .navigationDestination(for: Item.self) { item in
                 // データ詳細画面へ
-                ItemDetailView(navigationPath: $navigationPath, item: item)
+                ItemDetailView(navigationPath: $navigationPath, itemManager: itemManager, item: item)
             }
         }
     }
